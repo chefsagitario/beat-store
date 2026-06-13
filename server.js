@@ -31,7 +31,11 @@ app.post('/api/beats', upload.fields([
   { name: 'cover', maxCount: 1 }
 ]), (req, res) => {
   const { password, title, price, genre } = req.body;
+  
   if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Hatalı şifre' });
+  if (!req.files || !req.files['audio'] || !req.files['cover']) {
+    return res.status(400).json({ error: 'Audio ve cover dosyası gerekli!' });
+  }
 
   const beats = JSON.parse(fs.readFileSync('beats.json', 'utf8'));
   const newBeat = {
