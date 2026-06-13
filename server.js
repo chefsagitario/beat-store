@@ -6,7 +6,16 @@ const path = require('path');
 
 const app = express();
 const PORT = 3000;
-const ADMIN_PASSWORD = 'Alpi13789_'; // bunu değiştir
+const ADMIN_PASSWORD = 'Alpi13789_';
+
+// Upload timeout'unu artır
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(cors());
+app.use(express.static('public'));
+app.use('/uploads', express.static('uploads'));
+
+// Rest same...
 
 app.use(cors());
 app.use(express.json());
