@@ -1,0 +1,386 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0a0a0a;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 48px;
+  border-bottom: 1px solid #1a1a1a;
+  position: sticky;
+  top: 0;
+  background: #0a0a0a;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  font-size: 14px;
+  color: #888;
+}
+
+.nav-links a:hover {
+  color: #fff;
+}
+
+.nav-inquire {
+  background: #fff;
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+/* HERO */
+.hero {
+  padding: 120px 48px 80px;
+}
+
+.hero h1 {
+  font-size: clamp(64px, 10vw, 120px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.hero p {
+  color: #888;
+  font-size: 18px;
+  margin-top: 24px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.btn-primary {
+  background: #fff;
+  color: #000;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  border: 1px solid #333;
+}
+
+.btn-primary:hover { background: #e0e0e0; }
+.btn-secondary:hover { border-color: #666; }
+
+/* CATALOG */
+.catalog {
+  padding: 80px 48px;
+  border-top: 1px solid #1a1a1a;
+}
+
+.catalog-header {
+  margin-bottom: 40px;
+}
+
+.catalog-label {
+  font-size: 12px;
+  color: #888;
+  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.catalog-label::before {
+  content: '—';
+}
+
+.catalog h2 {
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.filter-btn {
+  background: transparent;
+  color: #888;
+  border: 1px solid #2a2a2a;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover, .filter-btn.active {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+/* BEAT GRID */
+.beat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.beat-card {
+  background: #111;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.beat-card:hover {
+  transform: translateY(-4px);
+}
+
+.beat-cover {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.beat-info {
+  padding: 16px;
+}
+
+.beat-genre {
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.beat-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.beat-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.beat-price {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.play-btn {
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.play-btn:hover { background: #e0e0e0; }
+.play-btn.playing { background: #888; color: #fff; }
+
+/* AUDIO PLAYER BAR */
+.player-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #111;
+  border-top: 1px solid #1a1a1a;
+  padding: 16px 48px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  z-index: 200;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+}
+
+.player-bar.visible {
+  transform: translateY(0);
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 200px;
+}
+
+.player-cover {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.player-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.player-genre {
+  font-size: 12px;
+  color: #888;
+}
+
+.player-controls {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 3px;
+  background: #333;
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 999px;
+  width: 0%;
+  transition: width 0.1s;
+}
+
+.player-time {
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+}
+
+.player-buy {
+  background: #fff;
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+}
+
+/* CONTACT */
+.contact {
+  padding: 120px 48px;
+  border-top: 1px solid #1a1a1a;
+  text-align: center;
+}
+
+.contact-label {
+  font-size: 12px;
+  color: #888;
+  letter-spacing: 3px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.contact-label::before { content: '—'; }
+
+.contact h2 {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 24px;
+}
+
+.contact p {
+  color: #888;
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+
+.contact-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid #1a1a1a;
+  padding: 32px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #888;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.footer-links a:hover { color: #fff; }
+
+.empty-state {
+  text-align: center;
+  padding: 80px 0;
+  color: #555;
+  font-size: 15px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');

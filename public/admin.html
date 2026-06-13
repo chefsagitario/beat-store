@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — ChefSagitario</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .admin-wrap {
+      max-width: 700px;
+      margin: 60px auto;
+      padding: 0 24px;
+    }
+    .admin-title {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .admin-sub {
+      color: #888;
+      margin-bottom: 48px;
+      font-size: 14px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      color: #888;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    input, select {
+      width: 100%;
+      background: #111;
+      border: 1px solid #222;
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+    }
+    input:focus, select:focus {
+      border-color: #444;
+    }
+    select option {
+      background: #111;
+    }
+    .submit-btn {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      width: 100%;
+    }
+    .submit-btn:hover { background: #e0e0e0; }
+    .msg {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+    }
+    .msg.success { background: #0f2a0f; color: #4caf50; display: block; }
+    .msg.error { background: #2a0f0f; color: #f44336; display: block; }
+    .divider {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      margin: 48px 0;
+    }
+    .beat-list-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+    .admin-beat {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #111;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+    }
+    .admin-beat img {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+    .admin-beat-info {
+      flex: 1;
+    }
+    .admin-beat-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .admin-beat-meta {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+    .delete-btn {
+      background: transparent;
+      border: 1px solid #333;
+      color: #888;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .delete-btn:hover {
+      border-color: #f44336;
+      color: #f44336;
+    }
+  </style>
+</head>
+<body>
+<div class="admin-wrap">
+  <a href="/" style="color:#888;font-size:13px;">← Siteye dön</a>
+  <div style="margin-top:32px;">
+    <div class="admin-title">Admin Paneli</div>
+    <div class="admin-sub">Beat ekle veya sil</div>
+  </div>
+
+  <!-- BEAT EKLE FORMU -->
+  <div class="form-group">
+    <label>ŞİFRE</label>
+    <input type="password" id="password" placeholder="Şifreni gir">
+  </div>
+
+  <div class="form-group">
+    <label>BEAT ADI</label>
+    <input type="text" id="title" placeholder="örn. Dark Nights">
+  </div>
+
+  <div class="form-group">
+    <label>FİYAT (₺)</label>
+    <input type="text" id="price" placeholder="örn. 500">
+  </div>
+
+  <div class="form-group">
+    <label>GENRE</label>
+    <select id="genre">
+      <option value="Hip-Hop">Hip-Hop</option>
+      <option value="Dancey">Dancey</option>
+      <option value="ChefSagitario Special">ChefSagitario Special</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>BEAT DOSYASI (MP3/WAV)</label>
+    <input type="file" id="audio" accept="audio/*">
+  </div>
+
+  <div class="form-group">
+    <label>KAPAK FOTOĞRAFI</label>
+    <input type="file" id="cover" accept="image/*">
+  </div>
+
+  <button class="submit-btn" onclick="uploadBeat()">Beat Ekle</button>
+  <div class="msg" id="msg"></div>
+
+  <hr class="divider">
+
+  <!-- MEVCUT BEATLAR -->
+  <div class="beat-list-title">Mevcut Beatlar</div>
+  <div id="admin-beat-list"></div>
+</div>
+
+<script>
+async function loadAdminBeats() {
+  const res = await fetch('/api/beats');
+  const beats = await res.json();
+  const list = document.getElementById('admin-beat-list');
+  if (beats.length === 0) {
+    list.innerHTML = '<div style="color:#555;font-size:14px;">Henüz beat yok.</div>';
+    return;
+  }
+  list.innerHTML = beats.map(b => `
+    <div class="admin-beat">
+      <img src="${b.cover}" alt="${b.title}">
+      <div class="admin-beat-info">
+        <div class="admin-beat-name">${b.title}</div>
+        <div class="admin-beat-meta">${b.genre} · ${b.price}₺</div>
+      </div>
+      <button class="delete-btn" onclick="deleteBeat(${b.id})">Sil</button>
+    </div>
+  `).join('');
+}
+
+async function uploadBeat() {
+  const password = document.getElementById('password').value;
+  const title = document.getElementById('title').value;
+  const price = document.getElementById('price').value;
+  const genre = document.getElementById('genre').value;
+  const audio = document.getElementById('audio').files[0];
+  const cover = document.getElementById('cover').files[0];
+  const msg = document.getElementById('msg');
+
+  if (!password || !title || !price || !audio || !cover) {
+    msg.className = 'msg error';
+    msg.textContent = 'Tüm alanları doldur!';
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('password', password);
+  formData.append('title', title);
+  formData.append('price', price);
+  formData.append('genre', genre);
+  formData.append('audio', audio);
+  formData.append('cover', cover);
+
+  try {
+    const res = await fetch('/api/beats', { method: 'POST', body: formData });
+    const data = await res.json();
+    if (data.success) {
+      msg.className = 'msg success';
+      msg.textContent = 'Beat başarıyla eklendi!';
+      loadAdminBeats();
+    } else {
+      msg.className = 'msg error';
+      msg.textContent = data.error || 'Hata oluştu.';
+    }
+  } catch (e) {
+    msg.className = 'msg error';
+    msg.textContent = 'Sunucuya bağlanılamadı.';
+  }
+}
+
+async function deleteBeat(id) {
+  const password = document.getElementById('password').value;
+  if (!password) {
+    alert('Önce şifreni gir!');
+    return;
+  }
+  if (!confirm('Bu beati silmek istediğine emin misin?')) return;
+
+  const res = await fetch(`/api/beats/${id}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password })
+  });
+  const data = await res.json();
+  if (data.success) {
+    loadAdminBeats();
+  } else {
+    alert(data.error || 'Silinemedi.');
+  }
+}
+
+loadAdminBeats();
+</script>
+</body>
+</html>
