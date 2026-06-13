@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = 'Alpi13789_';
 
 app.use(cors());
@@ -63,4 +63,4 @@ app.delete('/api/beats/:id', (req, res) => {
   res.json({ success: true });
 });
 
-app.listen(PORT, () => console.log(`Sunucu çalışıyor: http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Sunucu çalişiyor: http://localhost:${PORT}`));
