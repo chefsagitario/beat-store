@@ -8,15 +8,6 @@ const app = express();
 const PORT = 3000;
 const ADMIN_PASSWORD = 'Alpi13789_';
 
-// Upload timeout'unu artır
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
-app.use(cors());
-app.use(express.static('public'));
-app.use('/uploads', express.static('uploads'));
-
-// Rest same...
-
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
@@ -33,19 +24,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Beatları getir
 app.get('/api/beats', (req, res) => {
   const beats = JSON.parse(fs.readFileSync('beats.json', 'utf8'));
   res.json(beats);
 });
 
-// Beat ekle (admin)
 app.post('/api/beats', upload.fields([
   { name: 'audio', maxCount: 1 },
   { name: 'cover', maxCount: 1 }
 ]), (req, res) => {
   const { password, title, price, genre } = req.body;
-  
   if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Hatalı şifre' });
   if (!req.files || !req.files['audio'] || !req.files['cover']) {
     return res.status(400).json({ error: 'Audio ve cover dosyası gerekli!' });
@@ -65,7 +53,6 @@ app.post('/api/beats', upload.fields([
   res.json({ success: true });
 });
 
-// Beat sil (admin)
 app.delete('/api/beats/:id', (req, res) => {
   const { password } = req.body;
   if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Hatalı şifre' });
